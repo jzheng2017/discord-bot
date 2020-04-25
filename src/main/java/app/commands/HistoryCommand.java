@@ -20,16 +20,16 @@ public class HistoryCommand extends CommandListener {
             return;
         }
 
-//        String key = splittedMessage[1];
-//        String value = splittedMessage[2];
-
+        String[] parameters = splittedMessage[1].split(";");
+        int topN = Integer.parseInt(parameters[0]);
+        int limit = Integer.parseInt(parameters[1]);
         TextChannel channel = event.getTextChannel();
-        List<Message> messages = channel.getHistoryFromBeginning(100).complete().getRetrievedHistory();
+        List<Message> messages = channel.getHistoryFromBeginning(limit).complete().getRetrievedHistory();
         StringBuilder content = new StringBuilder();
         for (Message message : messages) {
             content.append(message.getContentRaw()).append(" ");
         }
 
-        channel.sendMessage(StringUtil.topNOccurrences(content.toString(), 10)).queue();
+        channel.sendMessage(StringUtil.topNOccurrences(content.toString(), topN)).queue();
     }
 }
