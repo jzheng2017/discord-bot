@@ -31,9 +31,9 @@ public class StringUtil {
         return occurrences;
     }
 
-    public static String topNOccurrences(String text, int limit) {
+    public static String topNOccurrences(String text, int limit, String delimiter) {
         StringBuilder topTen = new StringBuilder();
-        List<String> words = Arrays.asList(text.split("\\s+"));
+        List<String> words = Arrays.asList(text.split(delimiter));
         Map<String, Long> map = words.stream()
                 .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
 

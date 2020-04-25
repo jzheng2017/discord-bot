@@ -23,14 +23,17 @@ public class HistoryCommand extends CommandListener {
         }
 
         String[] parameters = splittedMessage[1].split(";");
-        int topN = Integer.parseInt(parameters[0]);
-        int limit = Integer.parseInt(parameters[1]);
+        String type = parameters[0];
+        int topN = Integer.parseInt(parameters[1]);
+        int limit = Integer.parseInt(parameters[2]);
 
         channel = event.getTextChannel();
-        String content = getHistoryAndBuildContent(limit);
+        String content = getHistoryAndBuildContent(limit, type);
+
+        String topNOccurrencesList = StringUtil.topNOccurrences(content, topN, type.equals("msg") ? "\\s+" : ",");
 
         if (!content.isEmpty()) {
-            channel.sendMessage(StringUtil.topNOccurrences(content, topN)).queue();
+            channel.sendMessage(topNOccurrencesList).queue();
         }
     }
 
@@ -38,8 +41,14 @@ public class HistoryCommand extends CommandListener {
         List<Message> messages = getHistory(limit);
         StringBuilder content = new StringBuilder();
 
-        for (Message message : messages) {
-            content.append(message.getContentRaw()).append(" ");
+        if (type.equalsIgnoreCase("msg"))
+            for (Message message : messages) {
+                content.append(message.getContentRaw()).append(" ");
+            }
+        else if (type.equalsIgnoreCase("ppl")) {
+            for (Message message : messages) {
+                content.append(message.getAuthor()).append(",");
+            }
         }
 
         return content.toString();
@@ -47,10 +56,17 @@ public class HistoryCommand extends CommandListener {
 
     private List<Message> getHistory(int limit) {
         try {
-            return channel.getHistoryFromBeginning(limit).complete().getRetrievedHistory();
+            return getMostRecentMessages(limit);
         } catch (IllegalArgumentException ex) {
             channel.sendMessage("Limit may not exceed 100!").queue();
             return Collections.emptyList();
         }
+    }
+
+    private List<Message> getMostRecentMessages(int limit) {
+        return channel
+                .getHistoryBefore(Long.parseLong(channel.getLatestMessageId()), limit)
+                .complete()
+                .getRetrievedHistory();
     }
 }
