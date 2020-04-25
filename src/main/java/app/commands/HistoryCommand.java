@@ -22,19 +22,24 @@ public class HistoryCommand extends CommandListener {
             return;
         }
 
-        String[] parameters = splittedMessage[1].split(";");
-        String type = parameters[0];
-        int topN = Integer.parseInt(parameters[1]);
-        int limit = Integer.parseInt(parameters[2]);
+        try {
+            String[] parameters = splittedMessage[1].split(";");
+            String type = parameters[0];
+            int topN = Integer.parseInt(parameters[1]);
+            int limit = Integer.parseInt(parameters[2]);
 
-        channel = event.getTextChannel();
-        String content = getHistoryAndBuildContent(limit, type);
+            channel = event.getTextChannel();
+            String content = getHistoryAndBuildContent(limit, type);
 
-        String topNOccurrencesList = StringUtil.topNOccurrences(content, topN, type.equals("msg") ? "\\s+" : ",");
+            String topNOccurrencesList = StringUtil.topNOccurrences(content, topN, type.equals("msg") ? "\\s+" : ",");
 
-        if (!content.isEmpty()) {
-            channel.sendMessage(topNOccurrencesList).queue();
+            if (!content.isEmpty()) {
+                channel.sendMessage(topNOccurrencesList).queue();
+            }
+        } catch (IndexOutOfBoundsException ex) {
+            channel.sendMessage("Invalid command!").queue();
         }
+
     }
 
     private String getHistoryAndBuildContent( int limit) {
