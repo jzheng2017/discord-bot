@@ -1,6 +1,7 @@
 package app;
 
 import app.commands.CoronaCommand;
+import app.commands.HistoryCommand;
 import app.commands.SearchCommand;
 import app.config.ConfigLoader;
 import net.dv8tion.jda.api.JDA;
@@ -14,5 +15,6 @@ public class DiscordBot {
         JDA jda = JDABuilder.createDefault(configLoader.get().getProperty("bot_token")).build();
         jda.addEventListener(new SearchCommand());
         jda.addEventListener(new CoronaCommand());
+        jda.addEventListener(new HistoryCommand());
     }
 }
