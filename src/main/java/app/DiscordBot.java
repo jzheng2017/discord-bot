@@ -1,6 +1,7 @@
 package app;
 
 import app.commands.CoronaCommand;
+import app.commands.HeavyCommand;
 import app.commands.HistoryCommand;
 import app.commands.SearchCommand;
 import app.config.ConfigLoader;
@@ -16,5 +17,6 @@ public class DiscordBot {
         jda.addEventListener(new SearchCommand());
         jda.addEventListener(new CoronaCommand());
         jda.addEventListener(new HistoryCommand());
+        jda.addEventListener(new HeavyCommand());
     }
 }
