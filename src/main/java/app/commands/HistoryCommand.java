@@ -6,9 +6,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryCommand extends CommandListener {
+    private TextChannel channel;
 
     public HistoryCommand() {
         super("history");
@@ -23,19 +25,32 @@ public class HistoryCommand extends CommandListener {
         String[] parameters = splittedMessage[1].split(";");
         int topN = Integer.parseInt(parameters[0]);
         int limit = Integer.parseInt(parameters[1]);
-        TextChannel channel = event.getTextChannel();
-        List<Message> messages;
-        try {
-            messages = channel.getHistoryFromBeginning(limit).complete().getRetrievedHistory();
-        } catch (IllegalArgumentException ex) {
-            channel.sendMessage("Limit may not exceed 100!").queue();
-            return;
+
+        channel = event.getTextChannel();
+        String content = getHistoryAndBuildContent(limit);
+
+        if (!content.isEmpty()) {
+            channel.sendMessage(StringUtil.topNOccurrences(content, topN)).queue();
         }
+    }
+
+    private String getHistoryAndBuildContent( int limit) {
+        List<Message> messages = getHistory(limit);
         StringBuilder content = new StringBuilder();
+
         for (Message message : messages) {
             content.append(message.getContentRaw()).append(" ");
         }
 
-        channel.sendMessage(StringUtil.topNOccurrences(content.toString(), topN)).queue();
+        return content.toString();
+    }
+
+    private List<Message> getHistory(int limit) {
+        try {
+            return channel.getHistoryFromBeginning(limit).complete().getRetrievedHistory();
+        } catch (IllegalArgumentException ex) {
+            channel.sendMessage("Limit may not exceed 100!").queue();
+            return Collections.emptyList();
+        }
     }
 }
