@@ -19,10 +19,6 @@ public class CommandListener extends ListenerAdapter {
         final boolean messageDoesNotStartWithPrefixAndCommand = !command.equals(Message.PREFIX + this.command);
         final boolean messageMadeByBot = event.getAuthor().isBot();
 
-        if (messageMadeByBot || messageDoesNotStartWithPrefixAndCommand) {
-            return false;
-        }
-
-        return true;
+        return !messageMadeByBot && !messageDoesNotStartWithPrefixAndCommand;
     }
 }
