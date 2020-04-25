@@ -1,29 +1,19 @@
 package app.commands;
 
-import app.constants.Message;
 import app.scraper.PageScraper;
 import app.utils.StringUtil;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jsoup.nodes.Document;
 
 import javax.annotation.Nonnull;
 
-public class SearchCommand extends ListenerAdapter {
-    private final String command = "search";
-    private String[] splittedMessage;
+public class SearchCommand extends CommandListener {
     private Document document;
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        splittedMessage = event.getMessage().getContentRaw().split("\\s+");
-        String command = splittedMessage[0];
-
-        final boolean messageDoesNotStartWithPrefixAndCommand = !command.equals(Message.PREFIX + this.command);
-        final boolean messageMadeByBot = event.getAuthor().isBot();
-
-        if (messageMadeByBot || messageDoesNotStartWithPrefixAndCommand) {
+        if (isValidCommand(event)) {
             return;
         }
 
