@@ -32,7 +32,7 @@ public class StringUtil {
     }
 
     public static String topNOccurrences(String text, int limit) {
-        String topTen = "";
+        StringBuilder topTen = new StringBuilder();
         List<String> words = Arrays.asList(text.split("\\s+"));
         Map<String, Long> map = words.stream()
                 .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
@@ -45,12 +45,21 @@ public class StringUtil {
         Iterator it = results.iterator();
         int counter = 1;
         int total = words.size();
+
         while (it.hasNext()) {
             Map.Entry result = (Map.Entry) it.next();
             int occurrence = Integer.parseInt(result.getValue().toString());
-            topTen += counter++ + ". " + result.getKey() + ": " + result.getValue() + "**" + String.format("  %.2f", ((float) occurrence / total * 100)) + "%** \n";
+            topTen
+                    .append(counter++)
+                    .append(". ")
+                    .append(result.getKey())
+                    .append(": ")
+                    .append(result.getValue())
+                    .append("**")
+                    .append(String.format("  %.2f", ((float) occurrence / total * 100)))
+                    .append("%** \n");
         }
 
-        return topTen;
+        return topTen.toString();
     }
 }
