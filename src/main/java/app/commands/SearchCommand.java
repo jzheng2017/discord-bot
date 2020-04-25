@@ -4,6 +4,7 @@ import app.scraper.PageScraper;
 import app.utils.StringUtil;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 
 import javax.annotation.Nonnull;
@@ -11,24 +12,36 @@ import javax.annotation.Nonnull;
 public class SearchCommand extends CommandListener {
     private Document document;
 
+    public SearchCommand() {
+        super("search");
+    }
+
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (isValidCommand(event)) {
+        if (!isValidCommand(event)) {
             return;
         }
 
-        String url = splittedMessage[1];
-        String key = splittedMessage[2];
-
-        PageScraper pageScraper = new PageScraper(url);
-
-        document = pageScraper.getContent();
-
         MessageChannel channel = event.getChannel();
-        channel.sendMessage(this.generateMessage(key)).queue();
+
+        try {
+            String url = splittedMessage[1];
+            String key = splittedMessage[2];
+
+            PageScraper pageScraper = new PageScraper(url);
+
+            document = pageScraper.getContent();
+
+            channel = event.getChannel();
+            channel.sendMessage(this.generateMessage(key)).queue();
+
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            channel.sendMessage("Invalid command!");
+        }
+
     }
 
-    private String generateMessage(String key) {
+    private String generateMessage(@NotNull String key) {
         String message = "";
 
         if (key.equals("occurrences")) {

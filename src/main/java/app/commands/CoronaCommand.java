@@ -10,9 +10,13 @@ import java.io.IOException;
 
 public class CoronaCommand extends CommandListener {
 
+    public CoronaCommand() {
+        super("corona");
+    }
+
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (isValidCommand(event)) {
+        if (!isValidCommand(event)) {
             return;
         }
 

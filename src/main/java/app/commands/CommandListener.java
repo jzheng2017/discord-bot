@@ -8,6 +8,10 @@ public class CommandListener extends ListenerAdapter {
     protected String command;
     protected String[] splittedMessage;
 
+    public CommandListener(String command) {
+        this.command = command;
+    }
+
     protected boolean isValidCommand(MessageReceivedEvent event) {
         splittedMessage = event.getMessage().getContentRaw().split("\\s+");
         String command = splittedMessage[0];
