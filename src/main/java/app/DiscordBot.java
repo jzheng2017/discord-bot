@@ -9,7 +9,7 @@ import javax.security.auth.login.LoginException;
 
 public class DiscordBot {
     public static void main(String[] args) throws LoginException {
-        JDA jda = JDABuilder.createDefault("TOKEN_HERE").build();
+        JDA jda = JDABuilder.createDefault("MjkzODQxMjg3MTg1MTcwNDQy.XqQFew.i5xX1TQSEA1gCsGPWBTRoQ-97bA").build();
         jda.addEventListener(new SearchCommand());
         jda.addEventListener(new CoronaCommand());
     }

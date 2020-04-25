@@ -34,7 +34,6 @@ public class SearchCommand extends ListenerAdapter {
 
         document = pageScraper.getContent();
 
-
         MessageChannel channel = event.getChannel();
         channel.sendMessage(this.generateMessage(key)).queue();
     }
@@ -43,21 +42,28 @@ public class SearchCommand extends ListenerAdapter {
         String message = "";
 
         if (key.equals("occurrences")) {
-            String needle = splittedMessage[3];
-
-            int numberOfOccurrences = StringUtil.occurrences(document.body().text(), needle);
-
-            message = String.format("**%d** number of occurrences", numberOfOccurrences);
+            message = generateOccurrences();
         }
-
         if (key.startsWith("top")) {
-            try {
-                int topN = Integer.parseInt(key.substring(3));
-                message = StringUtil.topNOccurrences(document.body().text(), topN);
-            } catch (NumberFormatException ex) {
-                message = "Invalid query";
-            }
+            message = generateNOccurrences(key);
         }
         return message;
+    }
+
+    private String generateNOccurrences(String key) {
+        try {
+            int topN = Integer.parseInt(key.substring(3));
+            return StringUtil.topNOccurrences(document.body().text(), topN);
+        } catch (NumberFormatException ex) {
+            return "Invalid query";
+        }
+    }
+
+    private String generateOccurrences() {
+        String needle = splittedMessage[3];
+
+        int numberOfOccurrences = StringUtil.occurrences(document.body().text(), needle);
+
+        return String.format("**%d** number of occurrences", numberOfOccurrences);
     }
 }
