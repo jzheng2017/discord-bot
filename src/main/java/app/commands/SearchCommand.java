@@ -36,7 +36,7 @@ public class SearchCommand extends CommandListener {
             channel.sendMessage(this.generateMessage(key)).queue();
 
         } catch (ArrayIndexOutOfBoundsException ex) {
-            channel.sendMessage("Invalid command!");
+            channel.sendMessage("Invalid command!").queue();
         }
 
     }
