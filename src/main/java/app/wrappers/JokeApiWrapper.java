@@ -39,7 +39,7 @@ public class JokeApiWrapper {
         if (joke == null) {
             throw new IllegalStateException("getJoke() must be called first");
         }
-        return String.format("**%s** \n %s", joke.getSetup(), joke.getDelivery());
+        return String.format("**%s** \n%s", joke.getSetup(), joke.getDelivery());
     }
 
     private String buildURL(String[] categories, String[] blacklist) {
