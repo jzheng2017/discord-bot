@@ -1,9 +1,6 @@
 package app;
 
-import app.commands.CoronaCommand;
-import app.commands.HeavyCommand;
-import app.commands.HistoryCommand;
-import app.commands.SearchCommand;
+import app.commands.*;
 import app.config.ConfigLoader;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -18,5 +15,6 @@ public class DiscordBot {
         jda.addEventListener(new CoronaCommand());
         jda.addEventListener(new HistoryCommand());
         jda.addEventListener(new HeavyCommand());
+        jda.addEventListener(new JokeCommand());
     }
 }
