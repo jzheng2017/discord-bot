@@ -36,7 +36,7 @@ public class CoronaCommand extends CommandListener {
         } catch (IOException e) {
             this.channel.sendMessage("Unknown").queue();
         } catch (ArrayIndexOutOfBoundsException ex) {
-            this.channel.sendMessage("Invalid command!").queue();
+            this.channel.sendMessage("Invalid command! Ex: !corona <country code> <type>").queue();
         }
 
     }

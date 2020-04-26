@@ -37,7 +37,7 @@ public class HistoryCommand extends CommandListener {
                 channel.sendMessage(topNOccurrencesList).queue();
             }
         } catch (IndexOutOfBoundsException ex) {
-            channel.sendMessage("Invalid command!").queue();
+            channel.sendMessage("Invalid command! Ex: !history <type>;<top>;<limit>").queue();
         }
 
     }
