@@ -31,23 +31,16 @@ public class StringUtil {
         return occurrences;
     }
 
-    public static String topNOccurrences(String text, int limit, String delimiter) {
+    public static String topNOccurrencesAsString(String text, int limit, String delimiter) {
         StringBuilder topTen = new StringBuilder();
         List<String> words = Arrays.asList(text.split(delimiter));
-        Map<String, Long> map = words.stream()
-                .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
 
-        List<Map.Entry<String, Long>> results = map.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(limit)
-                .collect(Collectors.toList());
+        List<Map.Entry<String, Long>> results = groupBy(words, limit);
 
-        Iterator it = results.iterator();
         int counter = 1;
         int total = words.size();
 
-        while (it.hasNext()) {
-            Map.Entry result = (Map.Entry) it.next();
+        for (Map.Entry<String, Long> result : results) {
             int occurrence = Integer.parseInt(result.getValue().toString());
             topTen
                     .append(counter++)
@@ -61,6 +54,16 @@ public class StringUtil {
         }
 
         return topTen.toString();
+    }
+
+    private static List<Map.Entry<String, Long>> groupBy(List<String> words, int limit) {
+        Map<String, Long> map = words.stream()
+                .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+
+        return map.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 
     public static String capitalize(String text) {
