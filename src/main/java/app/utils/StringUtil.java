@@ -2,7 +2,10 @@ package app.utils;
 
 import app.constants.Message;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -12,6 +15,14 @@ public class StringUtil {
     public static String truncate(String text) {
         if (text.length() > Message.MAX_MESSAGE_CHARACTERS_LENGTH) {
             return text.substring(0, Message.MAX_MESSAGE_CHARACTERS_LENGTH);
+        } else {
+            return text;
+        }
+    }
+
+    public static String truncate(String text, int limit) {
+        if (text.length() > limit) {
+            return text.substring(0, limit);
         } else {
             return text;
         }
@@ -54,6 +65,12 @@ public class StringUtil {
         }
 
         return topTen.toString();
+    }
+
+    public static List<Map.Entry<String, Long>> topNOccurrences(String text, int limit, String delimiter) {
+        List<String> words = Arrays.asList(text.split(delimiter));
+
+        return groupBy(words, limit);
     }
 
     private static List<Map.Entry<String, Long>> groupBy(List<String> words, int limit) {
