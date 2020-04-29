@@ -56,7 +56,7 @@ public class SearchCommand extends CommandListener {
     private String generateNOccurrences(String key) {
         try {
             int topN = Integer.parseInt(key.substring(3));
-            return StringUtil.topNOccurrences(document.body().text(), topN, "\\s+");
+            return StringUtil.topNOccurrencesAsString(document.body().text(), topN, "\\s+");
         } catch (NumberFormatException ex) {
             return "Invalid query";
         }
