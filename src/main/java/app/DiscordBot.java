@@ -16,5 +16,6 @@ public class DiscordBot {
         jda.addEventListener(new HistoryCommand());
         jda.addEventListener(new HeavyCommand());
         jda.addEventListener(new JokeCommand());
+        jda.addEventListener(new CommandCommand());
     }
 }
