@@ -6,7 +6,7 @@ public class CommandService {
 
 
     public List<String> getCommands() {
-        return List.of(new String[]{"history", "heavy", "history", "joke", "search"});
+        return List.of(new String[]{"history", "heavy", "jelle", "joke", "search"});
     }
 
 }
